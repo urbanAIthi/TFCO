@@ -1,0 +1,26 @@
+# Files
+*.pkl
+*.pyc
+**/*.pyc
+
+# Directories
+/wandb
+/content/*
+!/content/
+/data/*
+!/data/
+/trained_models
+
+
+
+# Old Directories
+/trained
+/trained_trans_cnn
+/models
+/archive
+/data
+/trained_spacial_temporal_decoder
+/spacial_decoder
+/pre_train_data
+/backlog
+

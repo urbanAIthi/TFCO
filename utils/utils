@@ -1,0 +1,48 @@
+import os
+import shutil
+from typing import List, Tuple
+
+
+def prepare_datasets(dataset_path: str, sequence_len: int, train_ids: List[int],
+                     val_ids: List[int], test_ids: List[int]) -> Tuple(List[str], List[str], List[str]):
+    # check if the dataset was prepared for the given sequence length
+    datasets_in_path = os.listdir(dataset_path)
+    # check if at least one file in the dataset path contains the sequence length
+    if not any([f'sequence_len' in dataset for dataset in datasets_in_path]):
+        raise ValueError(f'The dataset in {dataset_path} was not prepared for the given sequence length {sequence_len}')
+    # create the dataset paths
+    train_IDs = [f"data/{dataset_path}/sequence{sequence_len}_{dataset_path}_{i}.pkl" for i in train_ids]
+    # check the train IDs exist
+    if not all([os.path.exists(train_ID) for train_ID in train_IDs]):
+        raise ValueError(f'The train IDs {train_IDs} do not exist')
+    val_IDs = [f"data/{dataset_path}/sequence{sequence_len}_{dataset_path}_{i}.pkl" for i in val_ids]
+    # check the val IDs exist
+    if not all([os.path.exists(val_ID) for val_ID in val_IDs]):
+        raise ValueError(f'The val IDs {val_IDs} do not exist')
+    test_IDs = [f"data/{dataset_path}/sequence{sequence_len}_{dataset_path}_{i}.pkl" for i in test_ids]
+    # check the test IDs exist
+    if not all([os.path.exists(test_ID) for test_ID in test_IDs]):
+        raise ValueError(f'The test IDs {test_IDs} do not exist')
+    return train_IDs, val_IDs, test_IDs
+
+def prepare_path_structure(filename: str) -> str:
+    if not os.path.exists('trained_spacial_temporal_decoder'):
+        os.mkdir('trained_spacial_temporal_decoder')
+    path = os.path.join('trained_spacial_temporal_decoder', filename)
+    os.mkdir(path)
+    os.mkdir(os.path.join(path, 'plots'))
+    os.mkdir(os.path.join(path, 'plots', 'train'))
+    os.mkdir(os.path.join(path, 'plots', 'val'))
+    os.mkdir(os.path.join(path, 'models'))
+    os.mkdir(os.path.join(path, 'results'))
+    # copy the config file to the path
+    shutil.copy('configs/config.py', os.path.join(path, 'config.py'))
+
+    return path
+
+if __name__ == '__main__':
+    pass
+
+
+
+
